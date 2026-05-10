@@ -3,10 +3,38 @@
 import { useState } from "react";
 
 const SERVERS = [
-  { label: "Server 1", getUrl: (type, id, s, e) => type === "movie" ? `https://vidsrc.to/embed/movie/${id}` : `https://vidsrc.to/embed/tv/${id}/${s}/${e}` },
-  { label: "Server 2", getUrl: (type, id, s, e) => type === "movie" ? `https://vidsrc.xyz/embed/movie/${id}` : `https://vidsrc.xyz/embed/tv/${id}/${s}/${e}` },
-  { label: "Server 3", getUrl: (type, id, s, e) => type === "movie" ? `https://multiembed.mov/?video_id=${id}&tmdb=1` : `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}` },
-  { label: "Server 4", getUrl: (type, id, s, e) => type === "movie" ? `https://www.2embed.cc/embed/${id}` : `https://www.2embed.cc/embedtv/${id}&s=${s}&e=${e}` },
+  {
+    label: "VidLink",
+    desc: "Paling bersih",
+    getUrl: (type, id, s, e) =>
+      type === "movie"
+        ? `https://vidlink.pro/movie/${id}?primaryColor=E50914&secondaryColor=170000&iconColor=E50914&autoplay=true`
+        : `https://vidlink.pro/tv/${id}/${s}/${e}?primaryColor=E50914&secondaryColor=170000&iconColor=E50914&autoplay=true&nextbutton=true`,
+  },
+  {
+    label: "VidSrc Pro",
+    desc: "Stabil",
+    getUrl: (type, id, s, e) =>
+      type === "movie"
+        ? `https://vidsrc.pro/embed/movie/${id}`
+        : `https://vidsrc.pro/embed/tv/${id}/${s}/${e}`,
+  },
+  {
+    label: "VidSrc To",
+    desc: "Backup",
+    getUrl: (type, id, s, e) =>
+      type === "movie"
+        ? `https://vidsrc.to/embed/movie/${id}`
+        : `https://vidsrc.to/embed/tv/${id}/${s}/${e}`,
+  },
+  {
+    label: "SuperEmbed",
+    desc: "Banyak source",
+    getUrl: (type, id, s, e) =>
+      type === "movie"
+        ? `https://multiembed.mov/?video_id=${id}&tmdb=1`
+        : `https://multiembed.mov/?video_id=${id}&tmdb=1&s=${s}&e=${e}`,
+  },
 ];
 
 export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode = 1 }) {
@@ -44,6 +72,7 @@ export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode
               }`}
             >
               {server.label}
+              <span className="block text-[10px] opacity-60">{server.desc}</span>
             </button>
           ))}
         </div>
