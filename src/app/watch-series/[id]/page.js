@@ -1,6 +1,8 @@
 import { getSeriesDetails } from "@/lib/tmdb";
 import Link from "next/link";
-import { ArrowLeft, AlertTriangle } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import SafePlayer from "@/components/SafePlayer";
+import AdBlockBanner from "@/components/AdBlockBanner";
 
 export async function generateMetadata({ params }) {
   const series = await getSeriesDetails(params.id);
@@ -13,8 +15,6 @@ export default async function WatchSeriesPage({ params, searchParams }) {
   const series = await getSeriesDetails(params.id);
   const season = searchParams.s || 1;
   const episode = searchParams.e || 1;
-
-  const embedUrl = `https://vidsrc.xyz/embed/tv/${params.id}/${season}/${episode}`;
 
   return (
     <div className="min-h-screen bg-black">
@@ -34,27 +34,12 @@ export default async function WatchSeriesPage({ params, searchParams }) {
         </div>
       </div>
 
-      {/* Video Player */}
-      <div className="w-full max-w-6xl mx-auto">
-        <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-          <iframe
-            src={embedUrl}
-            className="absolute inset-0 w-full h-full"
-            allowFullScreen
-            allow="autoplay; encrypted-media"
-            referrerPolicy="origin"
-          />
-        </div>
-      </div>
+      {/* Video Player with server switcher */}
+      <SafePlayer tmdbId={params.id} type="tv" season={season} episode={episode} />
 
       {/* Episode selector */}
       <div className="max-w-6xl mx-auto px-4 py-6">
-        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 flex items-start gap-3 mb-6">
-          <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-yellow-200">
-            <p>Jika video tidak muncul, coba matikan AdBlocker atau gunakan browser lain.</p>
-          </div>
-        </div>
+        <AdBlockBanner />
 
         {/* Season & Episode selector */}
         <div className="bg-secondary/50 rounded-lg p-6">

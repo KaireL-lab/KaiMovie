@@ -1,6 +1,8 @@
 import { getMovieDetails } from "@/lib/tmdb";
 import Link from "next/link";
-import { ArrowLeft, AlertTriangle } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import SafePlayer from "@/components/SafePlayer";
+import AdBlockBanner from "@/components/AdBlockBanner";
 
 export async function generateMetadata({ params }) {
   const movie = await getMovieDetails(params.id);
@@ -12,7 +14,6 @@ export async function generateMetadata({ params }) {
 
 export default async function WatchPage({ params }) {
   const movie = await getMovieDetails(params.id);
-  const embedUrl = `https://vidsrc.xyz/embed/movie/${params.id}`;
 
   return (
     <div className="min-h-screen bg-black">
@@ -32,28 +33,12 @@ export default async function WatchPage({ params }) {
         </div>
       </div>
 
-      {/* Video Player */}
-      <div className="w-full max-w-6xl mx-auto">
-        <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-          <iframe
-            src={embedUrl}
-            className="absolute inset-0 w-full h-full"
-            allowFullScreen
-            allow="autoplay; encrypted-media"
-            referrerPolicy="origin"
-          />
-        </div>
-      </div>
+      {/* Video Player with server switcher */}
+      <SafePlayer tmdbId={params.id} type="movie" />
 
       {/* Info below player */}
       <div className="max-w-6xl mx-auto px-4 py-6">
-        <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 flex items-start gap-3 mb-6">
-          <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-yellow-200">
-            <p className="font-semibold mb-1">Catatan:</p>
-            <p>Jika video tidak muncul, coba matikan AdBlocker atau gunakan browser lain. Server video disediakan oleh pihak ketiga.</p>
-          </div>
-        </div>
+        <AdBlockBanner />
 
         <div className="bg-secondary/50 rounded-lg p-6">
           <h2 className="text-xl font-bold mb-2">{movie.title}</h2>
@@ -66,34 +51,7 @@ export default async function WatchPage({ params }) {
           </div>
           <p className="text-gray-400 text-sm leading-relaxed">{movie.overview}</p>
         </div>
-
-        {/* Server alternatives */}
-        <div className="mt-6">
-          <h3 className="font-semibold mb-3">Pilih Server:</h3>
-          <div className="flex flex-wrap gap-2">
-            <ServerButton label="Server 1" url={`https://vidsrc.xyz/embed/movie/${params.id}`} active />
-            <ServerButton label="Server 2" url={`https://vidsrc.to/embed/movie/${params.id}`} />
-            <ServerButton label="Server 3" url={`https://multiembed.mov/?video_id=${params.id}&tmdb=1`} />
-          </div>
-        </div>
       </div>
     </div>
-  );
-}
-
-function ServerButton({ label, url, active }) {
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-        active
-          ? "bg-accent text-white"
-          : "bg-white/10 hover:bg-white/20 text-gray-300"
-      }`}
-    >
-      {label}
-    </a>
   );
 }
