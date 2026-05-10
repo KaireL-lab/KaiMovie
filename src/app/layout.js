@@ -3,8 +3,21 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "KaiMovie - Nonton Film & Series Gratis Sub Indo",
-  description: "Nonton film dan series terbaru gratis dengan subtitle Indonesia. Streaming HD kualitas terbaik.",
+  title: {
+    default: "KaiMovie - Nonton Film & Series Gratis Sub Indo",
+    template: "%s | KaiMovie",
+  },
+  description: "Nonton film dan series terbaru gratis dengan subtitle Indonesia. Streaming HD kualitas terbaik di KaiMovie.",
+  keywords: ["nonton film", "streaming", "sub indo", "film gratis", "series", "KaiMovie", "layarkaca21"],
+  openGraph: {
+    title: "KaiMovie - Nonton Film & Series Gratis Sub Indo",
+    description: "Nonton film dan series terbaru gratis dengan subtitle Indonesia.",
+    siteName: "KaiMovie",
+    type: "website",
+  },
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }) {
