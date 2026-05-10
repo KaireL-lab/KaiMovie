@@ -1,4 +1,3 @@
-import { Film } from "lucide-react";
 import Link from "next/link";
 
 export default function Footer() {
@@ -9,7 +8,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <Film className="w-6 h-6 text-accent" />
+              <img src="/favicon.svg" alt="KaiMovie" className="w-7 h-7" />
               <span className="text-xl font-bold">
                 Kai<span className="text-accent">Movie</span>
               </span>

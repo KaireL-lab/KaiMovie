@@ -25,7 +25,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <Film className="w-8 h-8 text-accent" />
+            <img src="/favicon.svg" alt="KaiMovie" className="w-9 h-9" />
             <span className="text-2xl font-bold">
               Kai<span className="text-accent">Movie</span>
             </span>
