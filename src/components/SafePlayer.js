@@ -57,7 +57,7 @@ const SERVERS = [
 
 export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode = 1 }) {
   const [activeServer, setActiveServer] = useState(0);
-  const [shieldActive, setShieldActive] = useState(false);
+  const [shieldActive, setShieldActive] = useState(true);
   const clickCount = useRef(0);
   const embedUrl = SERVERS[activeServer].getUrl(type, tmdbId, season, episode);
 
@@ -70,7 +70,7 @@ export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode
 
   const handleServerChange = (i) => {
     setActiveServer(i);
-    setShieldActive(i !== 0);
+    setShieldActive(true);
     clickCount.current = 0;
   };
 
@@ -85,7 +85,7 @@ export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode
             allowFullScreen
             allow="autoplay; encrypted-media"
             referrerPolicy="origin"
-            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
+            
           />
           {/* Click shield - blocks first click (ad redirect), second click removes it */}
           {shieldActive && (
@@ -97,7 +97,7 @@ export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode
           )}
         </div>
         {shieldActive && (
-          <p className="text-center text-xs text-gray-500 mt-2">Klik 2x pada player untuk mulai nonton</p>
+          <p className="text-center text-xs text-yellow-500/80 mt-2 animate-pulse">Klik area player 2x untuk membuka video (ini memblokir iklan pop-up)</p>
         )}
       </div>
 
