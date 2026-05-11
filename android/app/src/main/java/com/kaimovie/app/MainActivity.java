@@ -119,6 +119,7 @@ public class MainActivity extends Activity {
                 fullscreenContainer.addView(view);
                 fullscreenContainer.setVisibility(View.VISIBLE);
                 webView.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             }
 
