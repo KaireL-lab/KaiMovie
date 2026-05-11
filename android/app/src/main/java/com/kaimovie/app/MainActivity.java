@@ -89,12 +89,8 @@ public class MainActivity extends Activity {
                 if (AdBlocker.isAd(url)) {
                     return true; // block
                 }
-                // Allow our domain and embed players
-                if (isAllowedUrl(url)) {
-                    return false; // let WebView handle it
-                }
-                // Block external navigations (ad redirects)
-                return true;
+                // Allow everything else (video players need many domains)
+                return false;
             }
 
             @Override
