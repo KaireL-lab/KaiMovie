@@ -39,9 +39,17 @@ jobs:
         with:
           gradle-version: '8.0'
 
+      - name: Create consistent keystore
+        working-directory: android
+        run: |
+          keytool -genkey -v -keystore app/debug.keystore \
+            -storepass kaimovie123 -keypass kaimovie123 \
+            -alias kaimovie -keyalg RSA -keysize 2048 -validity 36500 \
+            -dname "CN=KaiMovie, OU=Dev, O=KaiMovie, L=ID, ST=ID, C=ID"
+
       - name: Build Debug APK
         working-directory: android
-        run: gradle assembleDebug --no-daemon --stacktrace
+        run: gradle assembleDebug --no-daemon --stacktrace -Pandroid.injected.signing.store.file=$PWD/app/debug.keystore -Pandroid.injected.signing.store.password=kaimovie123 -Pandroid.injected.signing.key.alias=kaimovie -Pandroid.injected.signing.key.password=kaimovie123
 
       - name: Rename APK
         run: mv android/app/build/outputs/apk/debug/app-debug.apk android/app/build/outputs/apk/debug/KaiMovie.apk
