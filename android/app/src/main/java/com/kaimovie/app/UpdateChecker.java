@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Environment;
@@ -73,14 +74,19 @@ public class UpdateChecker {
 
                 if (apkUrl == null) return;
 
-                // Compare versions
-                String currentVersion = getCurrentVersion();
-                if (!tagName.contains(currentVersion)) {
-                    String finalApkUrl = apkUrl;
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        showUpdateDialog(releaseName, tagName, finalApkUrl);
-                    });
-                }
+                // Compare with last installed/dismissed tag
+                SharedPreferences prefs = activity.getSharedPreferences("kaimovie", Context.MODE_PRIVATE);
+                String lastTag = prefs.getString("last_update_tag", "");
+                String installedTag = prefs.getString("installed_tag", "");
+
+                // Don't show if user already dismissed this version or installed it
+                if (tagName.equals(lastTag) || tagName.equals(installedTag)) return;
+
+                String finalApkUrl = apkUrl;
+                String finalTagName = tagName;
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    showUpdateDialog(releaseName, finalTagName, finalApkUrl);
+                });
 
             } catch (Exception e) {
                 // Silent fail - don't bother user if check fails
@@ -98,13 +104,18 @@ public class UpdateChecker {
     }
 
     private void showUpdateDialog(String name, String tag, String apkUrl) {
+        SharedPreferences prefs = activity.getSharedPreferences("kaimovie", Context.MODE_PRIVATE);
+
         new AlertDialog.Builder(activity, android.R.style.Theme_DeviceDefault_Dialog)
             .setTitle("Update Tersedia!")
-            .setMessage("Versi baru " + name + " (" + tag + ") sudah tersedia.\n\nUpdate sekarang untuk fitur terbaru dan perbaikan bug.")
+            .setMessage("Versi baru " + name + " sudah tersedia.\n\nUpdate sekarang untuk fitur terbaru dan perbaikan bug.")
             .setPositiveButton("Update", (dialog, which) -> {
+                prefs.edit().putString("installed_tag", tag).apply();
                 downloadAndInstall(apkUrl);
             })
-            .setNegativeButton("Nanti", null)
+            .setNegativeButton("Nanti", (dialog, which) -> {
+                prefs.edit().putString("last_update_tag", tag).apply();
+            })
             .setCancelable(true)
             .show();
     }

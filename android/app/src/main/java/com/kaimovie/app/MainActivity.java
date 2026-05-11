@@ -48,6 +48,12 @@ public class MainActivity extends Activity {
         setupWebView();
         webView.loadUrl(HOME_URL);
 
+        // Mark current version as installed on first run
+        android.content.SharedPreferences prefs = getSharedPreferences("kaimovie", MODE_PRIVATE);
+        if (!prefs.contains("installed_tag")) {
+            prefs.edit().putString("installed_tag", "first_install").apply();
+        }
+
         // Check for updates
         new UpdateChecker(this).checkForUpdate();
     }
@@ -101,15 +107,24 @@ public class MainActivity extends Activity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 progressBar.setVisibility(View.GONE);
-                // Inject CSS to customize app look (hide web navbar, adjust padding)
+                // Inject CSS for Disney+ native app look
                 view.evaluateJavascript(
                     "(() => {" +
+                    "  if(document.getElementById('kaimovie-app-css')) return;" +
                     "  const s = document.createElement('style');" +
+                    "  s.id = 'kaimovie-app-css';" +
                     "  s.textContent = `" +
                     "    nav.glass-strong { display: none !important; }" +
-                    "    body { padding-top: 0 !important; }" +
+                    "    footer { display: none !important; }" +
+                    "    body { padding-top: 0 !important; background: #040714 !important; }" +
                     "    main { padding-top: 0 !important; }" +
-                    "    .pt-\\\\[72px\\\\] { padding-top: 0 !important; }" +
+                    "    [class*='pt-[72px]'] { padding-top: 0 !important; }" +
+                    "    .movie-card { border-radius: 12px !important; overflow: hidden !important; }" +
+                    "    .movie-card:hover { transform: scale(1.08) !important; }" +
+                    "    section h2 { font-size: 1.1rem !important; letter-spacing: 0.03em !important; }" +
+                    "    .grid { gap: 10px !important; }" +
+                    "    ::-webkit-scrollbar { display: none !important; }" +
+                    "    * { scrollbar-width: none !important; }" +
                     "  `;" +
                     "  document.head.appendChild(s);" +
                     "})()", null
