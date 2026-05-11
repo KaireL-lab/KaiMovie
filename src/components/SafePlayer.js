@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 const NX_KEY = "nx_7cdacbf0bdd9240042f0871f07c4f317";
 
@@ -65,11 +66,26 @@ const SERVERS = [
   },
 ];
 
-export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode = 1 }) {
+export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode = 1, title = "", poster = "" }) {
   const [activeServer, setActiveServer] = useState(0);
   const [shieldActive, setShieldActive] = useState(true);
   const [subUrl, setSubUrl] = useState(null);
   const clickCount = useRef(0);
+  const { addToHistory } = useAuth();
+
+  // Save to watch history
+  useEffect(() => {
+    if (tmdbId && title) {
+      addToHistory({
+        id: tmdbId,
+        type,
+        title,
+        poster,
+        season: type === "tv" ? season : undefined,
+        episode: type === "tv" ? episode : undefined,
+      });
+    }
+  }, [tmdbId, type, season, episode]);
 
   // Fetch Indonesian subtitle
   useEffect(() => {

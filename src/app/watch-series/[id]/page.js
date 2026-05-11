@@ -35,7 +35,7 @@ export default async function WatchSeriesPage({ params, searchParams }) {
       </div>
 
       {/* Video Player with server switcher */}
-      <SafePlayer tmdbId={params.id} type="tv" season={season} episode={episode} />
+      <SafePlayer tmdbId={params.id} type="tv" season={season} episode={episode} title={series.name} poster={series.poster_path} />
 
       {/* Episode selector */}
       <div className="max-w-6xl mx-auto px-4 py-6">

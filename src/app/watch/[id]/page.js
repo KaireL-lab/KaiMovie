@@ -34,7 +34,7 @@ export default async function WatchPage({ params }) {
       </div>
 
       {/* Video Player with server switcher */}
-      <SafePlayer tmdbId={params.id} type="movie" />
+      <SafePlayer tmdbId={params.id} type="movie" title={movie.title} poster={movie.poster_path} />
 
       {/* Info below player */}
       <div className="max-w-6xl mx-auto px-4 py-6">
