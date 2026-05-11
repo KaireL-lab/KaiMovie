@@ -101,22 +101,15 @@ public class MainActivity extends Activity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 progressBar.setVisibility(View.GONE);
-                // Inject CSS for Disney+ native app look
+                // Inject CSS for native app look
                 view.evaluateJavascript(
                     "(() => {" +
                     "  if(document.getElementById('kaimovie-app-css')) return;" +
                     "  const s = document.createElement('style');" +
                     "  s.id = 'kaimovie-app-css';" +
                     "  s.textContent = `" +
-                    "    nav.glass-strong { display: none !important; }" +
                     "    footer { display: none !important; }" +
-                    "    body { padding-top: 0 !important; background: #040714 !important; }" +
-                    "    main { padding-top: 0 !important; }" +
-                    "    [class*='pt-[72px]'] { padding-top: 0 !important; }" +
-                    "    .movie-card { border-radius: 12px !important; overflow: hidden !important; }" +
-                    "    .movie-card:hover { transform: scale(1.08) !important; }" +
-                    "    section h2 { font-size: 1.1rem !important; letter-spacing: 0.03em !important; }" +
-                    "    .grid { gap: 10px !important; }" +
+                    "    body { background: #040714 !important; }" +
                     "    ::-webkit-scrollbar { display: none !important; }" +
                     "    * { scrollbar-width: none !important; }" +
                     "  `;" +
