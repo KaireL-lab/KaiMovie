@@ -2,10 +2,20 @@
 
 import { useState } from "react";
 
+const NX_KEY = "nx_7cdacbf0bdd9240042f0871f07c4f317";
+
 const SERVERS = [
   {
+    label: "NexStream",
+    desc: "No ads, HD",
+    getUrl: (type, id, s, e) =>
+      type === "movie"
+        ? `https://api.codespecters.com/embed/movie/${id}?apikey=${NX_KEY}`
+        : `https://api.codespecters.com/embed/tv/${id}/${s}/${e}?apikey=${NX_KEY}`,
+  },
+  {
     label: "VidLink",
-    desc: "Paling bersih",
+    desc: "Bersih",
     getUrl: (type, id, s, e) =>
       type === "movie"
         ? `https://vidlink.pro/movie/${id}?primaryColor=E50914&secondaryColor=170000&iconColor=E50914&autoplay=true`
