@@ -1,40 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#040714"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:background="#040714">
 
-    <!-- Logo -->
-    <ImageView
-        android:id="@+id/splashLogo"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/splash_logo"
-        android:contentDescription="KaiMovie" />
-
-    <!-- App Name -->
-    <TextView
-        android:id="@+id/splashTitle"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="KaiMovie"
-        android:textColor="#FFFFFF"
-        android:textSize="36sp"
-        android:fontFamily="sans-serif-black"
-        android:letterSpacing="0.05" />
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <!-- Tagline -->
-    <TextView
-        android:id="@+id/splashSubtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Nonton Film &amp; Series Gratis"
-        android:textColor="#8899BB"
-        android:textSize="14sp"
-        android:fontFamily="sans-serif-medium" />
+        <!-- Logo + Glow container -->
+        <FrameLayout
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_gravity="center">
 
-</LinearLayout>
+            <!-- Glow ring behind logo -->
+            <View
+                android:id="@+id/glowRing"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                android:background="@drawable/glow_ring"
+                android:alpha="0" />
+
+            <!-- Logo -->
+            <ImageView
+                android:id="@+id/splashLogo"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:src="@drawable/splash_logo"
+                android:contentDescription="KaiMovie" />
+        </FrameLayout>
+
+        <!-- Title: Kai + Movie side by side -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/splashTitleKai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kai"
+                android:textColor="#FFFFFF"
+                android:textSize="42sp"
+                android:fontFamily="sans-serif-black"
+                android:letterSpacing="0.02" />
+
+            <TextView
+                android:id="@+id/splashTitleMovie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Movie"
+                android:textColor="#0089FF"
+                android:textSize="42sp"
+                android:fontFamily="sans-serif-black"
+                android:letterSpacing="0.02" />
+        </LinearLayout>
+
+        <!-- Tagline -->
+        <TextView
+            android:id="@+id/splashSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Nonton Film &amp; Series Gratis"
+            android:textColor="#5577AA"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.1" />
+    </LinearLayout>
+
+</RelativeLayout>
