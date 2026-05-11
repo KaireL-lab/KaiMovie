@@ -1,25 +1,35 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 
 const NX_KEY = "nx_7cdacbf0bdd9240042f0871f07c4f317";
 
+function getVidLinkUrl(type, id, s, e, subUrl) {
+  const base = type === "movie"
+    ? `https://vidlink.pro/movie/${id}?primaryColor=0089FF&secondaryColor=0A1128&iconColor=0089FF&autoplay=true`
+    : `https://vidlink.pro/tv/${id}/${s}/${e}?primaryColor=0089FF&secondaryColor=0A1128&iconColor=0089FF&autoplay=true&nextbutton=true`;
+  if (subUrl) {
+    return `${base}&sub_file=${encodeURIComponent(subUrl)}&sub_label=Indonesia`;
+  }
+  return base;
+}
+
 const SERVERS = [
+  {
+    label: "VidLink",
+    desc: "HD + Sub Indo",
+    id: "vidlink",
+    getUrl: (type, id, s, e) =>
+      getVidLinkUrl(type, id, s, e, null),
+  },
   {
     label: "NexStream",
     desc: "No ads, HD",
+    id: "nexstream",
     getUrl: (type, id, s, e) =>
       type === "movie"
         ? `https://api.codespecters.com/embed/movie/${id}?apikey=${NX_KEY}`
         : `https://api.codespecters.com/embed/tv/${id}/${s}/${e}?apikey=${NX_KEY}`,
-  },
-  {
-    label: "VidLink",
-    desc: "Bersih",
-    getUrl: (type, id, s, e) =>
-      type === "movie"
-        ? `https://vidlink.pro/movie/${id}?primaryColor=0089FF&secondaryColor=0A1128&iconColor=0089FF&autoplay=true`
-        : `https://vidlink.pro/tv/${id}/${s}/${e}?primaryColor=0089FF&secondaryColor=0A1128&iconColor=0089FF&autoplay=true&nextbutton=true`,
   },
   {
     label: "VidSrc ICU",
@@ -58,8 +68,34 @@ const SERVERS = [
 export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode = 1 }) {
   const [activeServer, setActiveServer] = useState(0);
   const [shieldActive, setShieldActive] = useState(true);
+  const [subUrl, setSubUrl] = useState(null);
   const clickCount = useRef(0);
-  const embedUrl = SERVERS[activeServer].getUrl(type, tmdbId, season, episode);
+
+  // Fetch Indonesian subtitle
+  useEffect(() => {
+    async function fetchSub() {
+      try {
+        const params = new URLSearchParams({ id: tmdbId, type, s: season, e: episode });
+        const res = await fetch(`/api/subtitle?${params}`);
+        const data = await res.json();
+        if (data.subtitles && data.subtitles.length > 0) {
+          const sub = data.subtitles[0];
+          setSubUrl(sub.url || sub.download_url || null);
+        }
+      } catch (e) {}
+    }
+    fetchSub();
+  }, [tmdbId, type, season, episode]);
+
+  // Build embed URL - inject subtitle for VidLink
+  const getEmbedUrl = () => {
+    const server = SERVERS[activeServer];
+    if (server.id === "vidlink" && subUrl) {
+      return getVidLinkUrl(type, tmdbId, season, episode, subUrl);
+    }
+    return server.getUrl(type, tmdbId, season, episode);
+  };
+  const embedUrl = getEmbedUrl();
 
   const handleShieldClick = useCallback(() => {
     clickCount.current += 1;
@@ -116,7 +152,9 @@ export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode
               }`}
             >
               {server.label}
-              <span className="block text-[10px] opacity-60">{server.desc}</span>
+              <span className="block text-[10px] opacity-60">
+                {server.id === "vidlink" && subUrl ? "HD + Sub Indo ✓" : server.desc}
+              </span>
             </button>
           ))}
         </div>
