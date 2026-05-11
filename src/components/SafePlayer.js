@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 
 const NX_KEY = "nx_7cdacbf0bdd9240042f0871f07c4f317";
 
@@ -57,7 +57,22 @@ const SERVERS = [
 
 export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode = 1 }) {
   const [activeServer, setActiveServer] = useState(0);
+  const [shieldActive, setShieldActive] = useState(true);
+  const clickCount = useRef(0);
   const embedUrl = SERVERS[activeServer].getUrl(type, tmdbId, season, episode);
+
+  const handleShieldClick = useCallback(() => {
+    clickCount.current += 1;
+    if (clickCount.current >= 2) {
+      setShieldActive(false);
+    }
+  }, []);
+
+  const handleServerChange = (i) => {
+    setActiveServer(i);
+    setShieldActive(true);
+    clickCount.current = 0;
+  };
 
   return (
     <div>
@@ -70,9 +85,19 @@ export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode
             allowFullScreen
             allow="autoplay; encrypted-media"
             referrerPolicy="origin"
-            
           />
+          {/* Click shield - blocks first click (ad redirect), second click removes it */}
+          {shieldActive && (
+            <div
+              onClick={handleShieldClick}
+              className="absolute inset-0 cursor-pointer z-10"
+              style={{ background: "transparent" }}
+            />
+          )}
         </div>
+        {shieldActive && (
+          <p className="text-center text-xs text-gray-500 mt-2">Klik 2x pada player untuk mulai nonton</p>
+        )}
       </div>
 
       {/* Server buttons */}
@@ -82,7 +107,7 @@ export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode
           {SERVERS.map((server, i) => (
             <button
               key={i}
-              onClick={() => setActiveServer(i)}
+              onClick={() => handleServerChange(i)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 i === activeServer
                   ? "bg-accent text-white"
