@@ -47,6 +47,9 @@ public class MainActivity extends Activity {
 
         setupWebView();
         webView.loadUrl(HOME_URL);
+
+        // Check for updates
+        new UpdateChecker(this).checkForUpdate();
     }
 
     private void setupWebView() {
