@@ -16,7 +16,7 @@ const LINKS = [
   },
   {
     label: "DOWNLOAD APK (AD-FREE)",
-    href: "https://github.com/KaireL-lab/KaiMovie/actions",
+    href: "https://github.com/KaireL-lab/KaiMovie/releases/latest",
     icon: Download,
     primary: false,
     external: true,
