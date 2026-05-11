@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'android/**'
+      - '.github/workflows/build-apk.yml'
   workflow_dispatch:
 
 jobs:
@@ -23,25 +24,24 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Accept SDK Licenses
+        run: yes | sdkmanager --licenses || true
+
+      - name: Install SDK components
+        run: |
+          sdkmanager "platforms;android-34" "build-tools;34.0.0"
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.0'
 
       - name: Build Debug APK
         working-directory: android
-        run: gradle assembleDebug --no-daemon
-
-      - name: Build Release APK
-        working-directory: android
-        run: gradle assembleRelease --no-daemon
+        run: gradle assembleDebug --no-daemon --stacktrace
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: KaiMovie-debug
           path: android/app/build/outputs/apk/debug/*.apk
-
-      - name: Upload Release APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: KaiMovie-release
-          path: android/app/build/outputs/apk/release/*.apk
