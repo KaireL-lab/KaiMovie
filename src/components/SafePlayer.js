@@ -85,6 +85,7 @@ export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode
             allowFullScreen
             allow="autoplay; encrypted-media"
             referrerPolicy="origin"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
           />
           {/* Click shield - blocks first click (ad redirect), second click removes it */}
           {shieldActive && (
