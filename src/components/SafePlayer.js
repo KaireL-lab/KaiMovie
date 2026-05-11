@@ -57,7 +57,7 @@ const SERVERS = [
 
 export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode = 1 }) {
   const [activeServer, setActiveServer] = useState(0);
-  const [shieldActive, setShieldActive] = useState(true);
+  const [shieldActive, setShieldActive] = useState(false);
   const clickCount = useRef(0);
   const embedUrl = SERVERS[activeServer].getUrl(type, tmdbId, season, episode);
 
@@ -70,7 +70,7 @@ export default function SafePlayer({ tmdbId, type = "movie", season = 1, episode
 
   const handleServerChange = (i) => {
     setActiveServer(i);
-    setShieldActive(true);
+    setShieldActive(i !== 0);
     clickCount.current = 0;
   };
 
