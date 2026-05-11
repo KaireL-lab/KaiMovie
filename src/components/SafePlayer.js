@@ -12,6 +12,14 @@ const SERVERS = [
         : `https://vidlink.pro/tv/${id}/${s}/${e}?primaryColor=E50914&secondaryColor=170000&iconColor=E50914&autoplay=true&nextbutton=true`,
   },
   {
+    label: "VidSrc ICU",
+    desc: "Minimal ads",
+    getUrl: (type, id, s, e) =>
+      type === "movie"
+        ? `https://vidsrc.icu/embed/movie/${id}`
+        : `https://vidsrc.icu/embed/tv/${id}/${s}/${e}`,
+  },
+  {
     label: "VidSrc Pro",
     desc: "Stabil",
     getUrl: (type, id, s, e) =>
