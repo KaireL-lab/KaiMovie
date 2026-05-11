@@ -40,7 +40,7 @@ export default function MovieCard({ movie, type = "movie" }) {
 
           {/* Play button on hover */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <div className="w-14 h-14 bg-accent/90 rounded-full flex items-center justify-center shadow-2xl shadow-accent/30 scale-75 group-hover:scale-100 transition-transform duration-300">
+            <div className="w-14 h-14 bg-accent rounded-full flex items-center justify-center shadow-2xl shadow-accent/40 scale-75 group-hover:scale-100 transition-transform duration-300 ring-2 ring-white/20">
               <Play className="w-6 h-6 fill-white text-white ml-0.5" />
             </div>
           </div>

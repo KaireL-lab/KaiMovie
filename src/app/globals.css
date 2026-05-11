@@ -20,7 +20,7 @@
   }
 
   .movie-card:hover {
-    box-shadow: 0 20px 60px rgba(229, 9, 20, 0.15), 0 8px 20px rgba(0,0,0,0.6);
+    box-shadow: 0 20px 60px rgba(0, 137, 255, 0.15), 0 8px 20px rgba(0,0,0,0.6);
   }
 
   .section-title {

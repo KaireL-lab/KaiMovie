@@ -18,8 +18,8 @@ const SERVERS = [
     desc: "Bersih",
     getUrl: (type, id, s, e) =>
       type === "movie"
-        ? `https://vidlink.pro/movie/${id}?primaryColor=E50914&secondaryColor=170000&iconColor=E50914&autoplay=true`
-        : `https://vidlink.pro/tv/${id}/${s}/${e}?primaryColor=E50914&secondaryColor=170000&iconColor=E50914&autoplay=true&nextbutton=true`,
+        ? `https://vidlink.pro/movie/${id}?primaryColor=0089FF&secondaryColor=0A1128&iconColor=0089FF&autoplay=true`
+        : `https://vidlink.pro/tv/${id}/${s}/${e}?primaryColor=0089FF&secondaryColor=0A1128&iconColor=0089FF&autoplay=true&nextbutton=true`,
   },
   {
     label: "VidSrc ICU",

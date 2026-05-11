@@ -50,7 +50,7 @@ export default function HeroSlider({ movies }) {
       <div className={`relative h-full max-w-7xl mx-auto px-4 lg:px-8 flex items-end pb-24 md:pb-32 transition-all duration-500 ${isTransitioning ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"}`}>
         <div className="max-w-2xl">
           <div className="flex items-center gap-3 mb-4">
-            <span className="bg-accent/90 px-3 py-1 rounded-md text-xs font-bold tracking-wider uppercase">Trending</span>
+            <span className="bg-accent px-3 py-1 rounded-md text-xs font-bold tracking-wider uppercase">Trending</span>
             <span className="text-sm text-gray-300 font-medium">#{current + 1} Trending Minggu Ini</span>
           </div>
 
