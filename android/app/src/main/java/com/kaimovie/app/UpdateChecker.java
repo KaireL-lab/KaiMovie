@@ -25,11 +25,16 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.concurrent.Executors;
 
 public class UpdateChecker {
 
-    private static final String GITHUB_API = "https://api.github.com/repos/KaireL-lab/KaiMovie/releases/latest";
+    private static final String GITHUB_API = "https://api.github.com/repos/KaireL-lab/KaiMovie/releases/tags/latest";
+    private static final String PREFS = "kaimovie_update";
     private final Activity activity;
 
     public UpdateChecker(Activity activity) {
@@ -57,9 +62,7 @@ public class UpdateChecker {
                 reader.close();
 
                 JSONObject release = new JSONObject(response.toString());
-                String tagName = release.getString("tag_name");
-                String releaseName = release.getString("name");
-                String body = release.optString("body", "");
+                String publishedAt = release.getString("published_at");
 
                 // Get APK download URL
                 JSONArray assets = release.getJSONArray("assets");
@@ -74,54 +77,62 @@ public class UpdateChecker {
 
                 if (apkUrl == null) return;
 
-                // Compare with last installed/dismissed tag
-                SharedPreferences prefs = activity.getSharedPreferences("kaimovie", Context.MODE_PRIVATE);
-                String lastTag = prefs.getString("last_update_tag", "");
-                String installedTag = prefs.getString("installed_tag", "");
+                // Compare release date with app install/update date
+                SharedPreferences prefs = activity.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+                long lastCheckedTime = prefs.getLong("last_release_time", 0);
+                boolean dismissed = prefs.getBoolean("dismissed", false);
 
-                // Don't show if user already dismissed this version or installed it
-                if (tagName.equals(lastTag) || tagName.equals(installedTag)) return;
+                // Parse release date
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                Date releaseDate = sdf.parse(publishedAt);
+                long releaseTime = releaseDate.getTime();
 
-                String finalApkUrl = apkUrl;
-                String finalTagName = tagName;
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    showUpdateDialog(releaseName, finalTagName, finalApkUrl);
-                });
+                // Get app install time
+                long appInstallTime = activity.getPackageManager()
+                    .getPackageInfo(activity.getPackageName(), 0).lastUpdateTime;
+
+                // Only show if release is NEWER than when this APK was installed
+                // AND user hasn't dismissed this specific release
+                if (releaseTime > appInstallTime && releaseTime != lastCheckedTime) {
+                    String finalApkUrl = apkUrl;
+                    long finalReleaseTime = releaseTime;
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        showUpdateDialog(finalApkUrl, finalReleaseTime);
+                    });
+                }
 
             } catch (Exception e) {
-                // Silent fail - don't bother user if check fails
+                // Silent fail
             }
         });
     }
 
-    private String getCurrentVersion() {
-        try {
-            PackageInfo pInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0);
-            return pInfo.versionName;
-        } catch (Exception e) {
-            return "1.0.0";
-        }
-    }
-
-    private void showUpdateDialog(String name, String tag, String apkUrl) {
-        SharedPreferences prefs = activity.getSharedPreferences("kaimovie", Context.MODE_PRIVATE);
+    private void showUpdateDialog(String apkUrl, long releaseTime) {
+        SharedPreferences prefs = activity.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
 
         new AlertDialog.Builder(activity, android.R.style.Theme_DeviceDefault_Dialog)
             .setTitle("Update Tersedia!")
-            .setMessage("Versi baru " + name + " sudah tersedia.\n\nUpdate sekarang untuk fitur terbaru dan perbaikan bug.")
+            .setMessage("Versi terbaru KaiMovie sudah tersedia.\n\nUpdate sekarang untuk fitur dan perbaikan terbaru.")
             .setPositiveButton("Update", (dialog, which) -> {
-                prefs.edit().putString("installed_tag", tag).apply();
+                prefs.edit().putLong("last_release_time", releaseTime).apply();
                 downloadAndInstall(apkUrl);
             })
             .setNegativeButton("Nanti", (dialog, which) -> {
-                prefs.edit().putString("last_update_tag", tag).apply();
+                // Save release time so we don't ask again for this release
+                prefs.edit().putLong("last_release_time", releaseTime).apply();
             })
-            .setCancelable(true)
+            .setCancelable(false)
             .show();
     }
 
     private void downloadAndInstall(String apkUrl) {
         Toast.makeText(activity, "Downloading update...", Toast.LENGTH_SHORT).show();
+
+        // Delete old file first
+        File oldFile = new File(Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_DOWNLOADS), "KaiMovie-update.apk");
+        if (oldFile.exists()) oldFile.delete();
 
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkUrl));
         request.setTitle("KaiMovie Update");
@@ -133,7 +144,6 @@ public class UpdateChecker {
         DownloadManager dm = (DownloadManager) activity.getSystemService(Context.DOWNLOAD_SERVICE);
         long downloadId = dm.enqueue(request);
 
-        // Listen for download complete
         activity.registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

@@ -48,12 +48,6 @@ public class MainActivity extends Activity {
         setupWebView();
         webView.loadUrl(HOME_URL);
 
-        // Mark current version as installed on first run
-        android.content.SharedPreferences prefs = getSharedPreferences("kaimovie", MODE_PRIVATE);
-        if (!prefs.contains("installed_tag")) {
-            prefs.edit().putString("installed_tag", "first_install").apply();
-        }
-
         // Check for updates
         new UpdateChecker(this).checkForUpdate();
     }
