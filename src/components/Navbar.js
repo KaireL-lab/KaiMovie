@@ -36,7 +36,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-[72px]">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
+          <Link href="/browse" className="flex items-center gap-2.5 group">
             <img src="/favicon.svg" alt="KaiMovie" className="w-10 h-10 group-hover:scale-110 transition-transform duration-300" />
             <span className="text-2xl font-extrabold tracking-tight">
               Kai<span className="text-accent">Movie</span>
@@ -45,10 +45,9 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
-            <NavLink href="/" icon={<Home className="w-4 h-4" />} label="Home" />
+            <NavLink href="/browse" icon={<Home className="w-4 h-4" />} label="Home" />
             <NavLink href="/genre" icon={<Film className="w-4 h-4" />} label="Genre" />
             <NavLink href="/series" icon={<Tv className="w-4 h-4" />} label="Series" />
-            <NavLink href="/links" icon={<LinkIcon className="w-4 h-4" />} label="Links" />
           </div>
 
           {/* Search */}
@@ -94,10 +93,9 @@ export default function Navbar() {
               </div>
             </form>
             <div className="flex flex-col gap-1">
-              <MobileLink href="/" onClick={() => setMenuOpen(false)} icon={<Home className="w-4 h-4" />} label="Home" />
+              <MobileLink href="/browse" onClick={() => setMenuOpen(false)} icon={<Home className="w-4 h-4" />} label="Home" />
               <MobileLink href="/genre" onClick={() => setMenuOpen(false)} icon={<Film className="w-4 h-4" />} label="Genre" />
               <MobileLink href="/series" onClick={() => setMenuOpen(false)} icon={<Tv className="w-4 h-4" />} label="Series" />
-              <MobileLink href="/links" onClick={() => setMenuOpen(false)} icon={<LinkIcon className="w-4 h-4" />} label="Links & APK" />
             </div>
           </div>
         )}
