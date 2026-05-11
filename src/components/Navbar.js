@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, Menu, X, Film, Tv, Home } from "lucide-react";
+import { Search, Menu, X, Film, Tv, Home, LinkIcon } from "lucide-react";
 
 export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -48,6 +48,7 @@ export default function Navbar() {
             <NavLink href="/" icon={<Home className="w-4 h-4" />} label="Home" />
             <NavLink href="/genre" icon={<Film className="w-4 h-4" />} label="Genre" />
             <NavLink href="/series" icon={<Tv className="w-4 h-4" />} label="Series" />
+            <NavLink href="/links" icon={<LinkIcon className="w-4 h-4" />} label="Links" />
           </div>
 
           {/* Search */}
@@ -96,6 +97,7 @@ export default function Navbar() {
               <MobileLink href="/" onClick={() => setMenuOpen(false)} icon={<Home className="w-4 h-4" />} label="Home" />
               <MobileLink href="/genre" onClick={() => setMenuOpen(false)} icon={<Film className="w-4 h-4" />} label="Genre" />
               <MobileLink href="/series" onClick={() => setMenuOpen(false)} icon={<Tv className="w-4 h-4" />} label="Series" />
+              <MobileLink href="/links" onClick={() => setMenuOpen(false)} icon={<LinkIcon className="w-4 h-4" />} label="Links & APK" />
             </div>
           </div>
         )}
