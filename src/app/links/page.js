@@ -21,7 +21,7 @@ const LINKS = [
   },
   {
     label: "DONASI / SUPPORT",
-    href: "https://saweria.co/kaimovie",
+    href: "https://saweria.co/KareLLxy",
     icon: Heart,
     primary: false,
   },
