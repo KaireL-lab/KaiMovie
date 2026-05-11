@@ -4,7 +4,16 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M38,30 L38,78 L48,78 L48,60 L58,78 L70,78 L56,54 L68,30 L56,30 L48,48 L48,30 Z" />
+    <!-- Stylized K letter -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M36,32 L44,32 L44,49 L58,32 L68,32 L51,51 L69,76 L59,76 L44,56 L44,76 L36,76 Z"/>
+    <!-- Disney-style swoosh arc over the K -->
+    <path android:fillColor="#FFFFFF" android:fillAlpha="0.9"
+        android:pathData="M30,38 Q42,22 60,24 Q72,26 78,34"
+        android:strokeWidth="2.2"
+        android:strokeColor="#FFFFFF"
+        android:fillColor="#00000000"/>
+    <!-- Small star sparkle -->
+    <path android:fillColor="#FFFFFF"
+        android:pathData="M74,28 L75.5,31 L79,32.5 L75.5,34 L74,37 L72.5,34 L69,32.5 L72.5,31 Z"/>
 </vector>

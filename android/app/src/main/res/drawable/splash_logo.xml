@@ -4,17 +4,32 @@
     android:height="120dp"
     android:viewportWidth="120"
     android:viewportHeight="120">
-    <!-- Rounded background -->
+    <!-- Rounded background - dark blue -->
     <path
-        android:fillColor="#0089ff"
-        android:pathData="M10,0 L110,0 Q120,0 120,10 L120,110 Q120,120 110,120 L10,120 Q0,120 0,110 L0,10 Q0,0 10,0 Z" />
-    <!-- Shine overlay -->
+        android:fillColor="#0B1A3E"
+        android:pathData="M16,0 L104,0 Q120,0 120,16 L120,104 Q120,120 104,120 L16,120 Q0,120 0,104 L0,16 Q0,0 16,0 Z" />
+    <!-- Teal gradient glow -->
     <path
-        android:fillColor="#33AAFF"
+        android:fillColor="#0D3B66"
+        android:fillAlpha="0.7"
+        android:pathData="M120,120 L120,40 Q90,65 50,85 Q25,100 0,120 Z" />
+    <path
+        android:fillColor="#1A8A8A"
         android:fillAlpha="0.3"
-        android:pathData="M10,0 L110,0 Q120,0 120,10 L120,60 L0,60 L0,10 Q0,0 10,0 Z" />
+        android:pathData="M120,120 L120,60 Q95,80 60,95 Q35,105 0,120 Z" />
     <!-- K letter -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M38,28 L48,28 L48,50 L62,28 L74,28 L56,52 L76,92 L64,92 L48,58 L48,92 L38,92 Z" />
+        android:pathData="M38,30 L48,30 L48,50 L64,30 L76,30 L56,52 L78,90 L66,90 L48,58 L48,90 L38,90 Z" />
+    <!-- Disney swoosh arc -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:strokeAlpha="0.9"
+        android:pathData="M28,42 Q46,18 70,22 Q86,25 94,38" />
+    <!-- Star sparkle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M90,28 L92,32 L96,34 L92,36 L90,40 L88,36 L84,34 L88,32 Z" />
 </vector>

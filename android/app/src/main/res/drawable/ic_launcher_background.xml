@@ -4,7 +4,12 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <path
-        android:fillColor="#0089ff"
-        android:pathData="M0,0h108v108h-108z" />
+    <!-- Dark blue base -->
+    <path android:fillColor="#0B1A3E" android:pathData="M0,0h108v108H0z"/>
+    <!-- Gradient overlay - lighter blue-teal at bottom right -->
+    <path android:fillColor="#0D3B66" android:fillAlpha="0.7"
+        android:pathData="M108,108 L108,30 Q80,60 40,80 Q20,90 0,108 Z"/>
+    <!-- Subtle teal glow -->
+    <path android:fillColor="#1A8A8A" android:fillAlpha="0.25"
+        android:pathData="M108,108 L108,55 Q85,75 55,90 Q30,100 0,108 Z"/>
 </vector>
