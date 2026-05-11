@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
     private View customView;
     private WebChromeClient.CustomViewCallback customViewCallback;
 
-    private static final String HOME_URL = "https://kai-movie.vercel.app";
+    private static final String HOME_URL = "https://kai-movie.vercel.app/browse";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +81,16 @@ public class MainActivity extends Activity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                String url = request.getUrl().toString();
-                // Block popup redirects - only allow our domain and embed players
+                String url = request.getUrl().toString().toLowerCase();
+                // Block ad redirects
+                if (AdBlocker.isAd(url)) {
+                    return true; // block
+                }
+                // Allow our domain and embed players
                 if (isAllowedUrl(url)) {
                     return false; // let WebView handle it
                 }
-                // Block all other navigations (ad redirects)
+                // Block external navigations (ad redirects)
                 return true;
             }
 
@@ -152,6 +156,18 @@ public class MainActivity extends Activity {
             "multiembed.mov",
             "image.tmdb.org",
             "themoviedb.org",
+            "rabbitstream",
+            "dokicloud",
+            "megacloud",
+            "upstream",
+            "mixdrop",
+            "filemoon",
+            "streamtape",
+            "dood",
+            "mp4upload",
+            "embedsu",
+            "vid2faf",
+            "cloudflare",
         };
         for (String domain : allowed) {
             if (url.contains(domain)) return true;
