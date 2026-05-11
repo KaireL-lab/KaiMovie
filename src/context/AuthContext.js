@@ -14,12 +14,14 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
-  const register = (username, password) => {
+  const register = (username, email, password) => {
     const users = JSON.parse(localStorage.getItem("kaimovie_users") || "{}");
     if (users[username]) return { error: "Username sudah dipakai" };
-    users[username] = { password, createdAt: Date.now() };
+    const emailExists = Object.values(users).some(u => u.email === email);
+    if (emailExists) return { error: "Email sudah terdaftar" };
+    users[username] = { email, password, createdAt: Date.now() };
     localStorage.setItem("kaimovie_users", JSON.stringify(users));
-    const userData = { username, avatar: username[0].toUpperCase() };
+    const userData = { username, email, avatar: username[0].toUpperCase() };
     localStorage.setItem("kaimovie_user", JSON.stringify(userData));
     setUser(userData);
     return { success: true };

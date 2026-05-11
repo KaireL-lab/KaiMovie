@@ -3,11 +3,12 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { User, Lock, LogIn, UserPlus } from "lucide-react";
+import { User, Lock, LogIn, UserPlus, Mail } from "lucide-react";
 
 export default function LoginPage() {
   const [isRegister, setIsRegister] = useState(false);
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { user, login, register } = useAuth();
@@ -24,11 +25,19 @@ export default function LoginPage() {
       setError("Isi username dan password");
       return;
     }
+    if (isRegister && !email.trim()) {
+      setError("Isi email kamu");
+      return;
+    }
+    if (isRegister && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Format email tidak valid");
+      return;
+    }
     if (password.length < 4) {
       setError("Password minimal 4 karakter");
       return;
     }
-    const result = isRegister ? register(username.trim(), password) : login(username.trim(), password);
+    const result = isRegister ? register(username.trim(), email.trim(), password) : login(username.trim(), password);
     if (result.error) setError(result.error);
   };
 
@@ -64,6 +73,19 @@ export default function LoginPage() {
               />
             </div>
 
+            {isRegister && (
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3.5 text-sm focus:outline-none focus:border-accent/60 transition-colors"
+                />
+              </div>
+            )}
+
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
               <input
@@ -90,7 +112,7 @@ export default function LoginPage() {
 
           <div className="mt-6 text-center">
             <button
-              onClick={() => { setIsRegister(!isRegister); setError(""); }}
+              onClick={() => { setIsRegister(!isRegister); setError(""); setEmail(""); }}
               className="text-sm text-gray-400 hover:text-accent transition-colors"
             >
               {isRegister ? "Sudah punya akun? Masuk" : "Belum punya akun? Daftar"}
