@@ -101,6 +101,19 @@ public class MainActivity extends Activity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 progressBar.setVisibility(View.GONE);
+                // Inject CSS to customize app look (hide web navbar, adjust padding)
+                view.evaluateJavascript(
+                    "(() => {" +
+                    "  const s = document.createElement('style');" +
+                    "  s.textContent = `" +
+                    "    nav.glass-strong { display: none !important; }" +
+                    "    body { padding-top: 0 !important; }" +
+                    "    main { padding-top: 0 !important; }" +
+                    "    .pt-\\\\[72px\\\\] { padding-top: 0 !important; }" +
+                    "  `;" +
+                    "  document.head.appendChild(s);" +
+                    "})()", null
+                );
             }
         });
 

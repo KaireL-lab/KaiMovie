@@ -8,4 +8,10 @@
         <item name="android:navigationBarColor">@color/primary</item>
         <item name="android:windowBackground">@color/primary</item>
     </style>
+
+    <style name="Theme.KaiMovie.Splash" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/splash_bg</item>
+        <item name="android:statusBarColor">@color/splash_bg</item>
+        <item name="android:navigationBarColor">@color/splash_bg</item>
+    </style>
 </resources>

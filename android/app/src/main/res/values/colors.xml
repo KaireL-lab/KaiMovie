@@ -5,4 +5,5 @@
     <color name="accent">#0089ff</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="splash_bg">#040714</color>
 </resources>
